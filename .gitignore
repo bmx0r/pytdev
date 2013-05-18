@@ -1,0 +1,14 @@
+vagrant/files/Django-1.4.3.tar.gz
+vagrant/.vagrant
+manifests/build/*
+*.swp
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+*.py[cod]
+*.sqlite3
+*.pyc
+*~
+migrations/
