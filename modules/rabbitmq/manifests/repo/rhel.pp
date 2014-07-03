@@ -5,11 +5,12 @@ class rabbitmq::repo::rhel (
 ) { 
     exec { "rpm --import ${key}":
         path => ["/bin","/usr/bin","/sbin","/usr/sbin"],
+	unless => "rpm -qa gpg-pubkey |grep 056e8e56 2>/dev/null"
     }
 
     package { "rabbitmq-server":
         provider => rpm,
-        ensure => installed,
+        ensure => "${version}-${relversion}",
         source => "http://www.rabbitmq.com/releases/rabbitmq-server/v${version}/rabbitmq-server-${version}-${relversion}.noarch.rpm",
         require => Exec["rpm --import ${key}"],
     }

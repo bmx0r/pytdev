@@ -27,7 +27,6 @@
 #
 #  
 #
-# TODO Find a way to define the version of rabbitmq+repo
 # [Remember: No empty lines between comments and class definition]
 class rabbitmq::server(
   $port = '5672',
@@ -39,6 +38,7 @@ class rabbitmq::server(
   $config_stomp = false,
   $stomp_port = '6163',
   $config_cluster = false,
+  $config_management = true,
   $cluster_disk_nodes = [],
   $node_ip_address = 'UNSET',
   $config='UNSET',
@@ -71,10 +71,17 @@ class rabbitmq::server(
 
   $plugin_dir = "/usr/lib/rabbitmq/lib/rabbitmq_server-${version_real}/plugins"
 
-  package { $package_name:
-    ensure => $pkg_ensure_real,
-    notify => Class['rabbitmq::service'],
+if $::osfamily == 'RedHat' and $::operatingsystem != 'Fedora' {
+  class { 'rabbitmq::repo::rhel':
+        version    => $version_real,
+        relversion => "1",
+	notify 	   => Class['rabbitmq::service'],	
+    }
+} else {
+      notice ("Your operating system ${::operatingsystem} need to use rabbitmq::repo::apt TODO")
   }
+
+
 
   file { '/etc/rabbitmq':
     ensure  => directory,
@@ -145,5 +152,11 @@ class rabbitmq::server(
       provider => 'rabbitmqctl',
     }
   }
+  if $config_management {
+    rabbitmq_plugin {'rabbitmq_management':
+      ensure => present,
+      provider => 'rabbitmqplugins',
+    }
+ }
 
 }

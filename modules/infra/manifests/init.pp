@@ -15,11 +15,46 @@ class database{
     class { 'mysql': }
    
 # setup mongodb
-    class mongodb {
-      enable_10gen => true,
+class { 'mongodb':
+     enable_10gen => true,
+   }
+
+#elasticSearch
+class { 'elasticsearch':
+        config                   => {
+          'node'                 => {
+                'name'                 => $::hostname
+                                },
+                'index'                => {
+                                    'number_of_replicas' => '0',
+                                    'number_of_shards'   => '5'
+                                            },
+               # 'network'              => {
+               #                     'host'               => '192.168.33.10'
+               #                           }
+                 'cluster'            => {
+                                    'name'             => 'ESClusterName',
+                                        },
+                                   },
+         status   => 'running',
+         java_install => true,
+         manage_repo  => true,
+         repo_version => '1.1',
+        }
+elasticsearch::plugin{'mobz/elasticsearch-head':
+   module_dir => 'head'
     }
 
 }
+#class { 'rabbitmq::repo::rhel':
+#        version    => "2.8.4",
+#        relversion => "1",
+#    }
+#
+##add rabbitmq
+#class { 'rabbitmq::server':
+#      delete_guest_user => false,
+#    }
 
 class webfront{
 #this class will setup python/django/django-celery/rabbitmq/apache+modwsgi/mysqlclient/the APP... all needed to the web
@@ -66,11 +101,11 @@ class base(
 		ensure => "present",
     		content => template($requirements_template),
 	}
-    file { "/usr/bin/pip":
-	ensure => link,
-	require => Package["python-pip"],
-	target => "/usr/bin/pip-python",
-	}
+#    file { "/usr/bin/pip":
+#	ensure => link,
+#	#require => Package["python-pip"],
+#	target => "/usr/bin/pip-python",
+#	}
     package{
 	'distribute':
 		provider => pip,
@@ -78,7 +113,7 @@ class base(
 	}
     pip::install {"allpython":
     	requirements => $requirements,
-    	require => [File["/usr/bin/pip"],Package["distribute"],Package["python-pip"],File[$requirements],Package["mysql-devel"],Package["python-devel"]],
+    	require => [Package["distribute"],Package["python-pip"],File[$requirements],Package["mysql-devel"],Package["python-devel"]],
 	}
 
     #package needed from the distro:
@@ -86,6 +121,8 @@ class base(
 	'gcc':
 		ensure => present;
 	'nmap':
+		ensure => present;
+	'vim-enhanced':
 		ensure => present;
 	'mysql-devel':
 		ensure => present;
@@ -102,5 +139,16 @@ class base(
 			     Package["python-devel"]
 			];
 	}
+
+    #Apache
+    class { 'apache':
+            default_vhost        => false,
+                    }
+                    apache::vhost { 'kibana.example.com':
+                                    port          => '80',
+                                    docroot       => '/opt/kibana',
+                                    docroot_owner => 'apache',
+                                    docroot_group => 'apache',
+                                  }
   }
 }
