@@ -1,11 +1,4 @@
 Fabric
-MySQL-python
-Pygments
-South
-amqp
-amqplib
-anyjson
-billiard
 bpython
 distribute
 importlib
@@ -21,11 +14,12 @@ python-dateutil
 pytz==2012j
 urlgrabber
 virtualenv
-PyMongo
-sqlalchemy
 pyflakes
 pep8
 flake8
 mccabe
 nose
 pylint
+elasticsearch
+jsonpickle
+simplejson
