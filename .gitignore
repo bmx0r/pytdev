@@ -1,5 +1,4 @@
-vagrant/files/Django-1.4.3.tar.gz
-vagrant/.vagrant
+.vagrant
 manifests/build/*
 *.swp
 *~
