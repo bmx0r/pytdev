@@ -17,6 +17,7 @@ git submodule foreach git submodule update
 vagrant up
 
 use your favorite browse to check :
+
 http://192.168.3.10/src/index.html#/dashboard/file/default.json
 http://192.168.3.10:9200/_plugin/head/
 http://192.168.3.10:9200/_plugin/paramedic/index.html
