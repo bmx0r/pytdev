@@ -16,3 +16,6 @@
 [submodule "modules/epel"]
 	path = modules/epel
 	url = http://github.com/stahnma/puppet-module-epel
+[submodule "modules/python"]
+	path = modules/python
+	url = https://github.com/stankevich/puppet-python

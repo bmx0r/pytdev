@@ -46,23 +46,30 @@ class base(
 		ensure => "present",
     		content => template($requirements_template),
 	}
-
-  package{
-	'distribute':
-		provider => pip,
-		ensure => latest;
-  'setuptools':
-		provider => pip,
-		ensure => latest,
-    require => [Package['python-pip']],
-	}
-    pip::install {"allpython":
-    	requirements => $requirements,
-    	require => [Package["distribute"],Package["python-pip"],File[$requirements],Package["python-devel"],Package['setuptools']],
-	}
-
-    # package needed from the distro:
-    package {
+class { 'python':
+  version    => 'system',
+  dev        => true,
+  virtualenv => true,
+  pip        => true,
+  gunicorn   => false,
+}
+python::requirements { "/tmp/allpython.txt":}
+#  package{
+#	'distribute':
+#		provider => pip,
+#		ensure => latest;
+#  'setuptools':
+#		provider => pip,
+#		ensure => latest,
+#    require => [Package['python-pip']],
+#	}
+#    pip::install {"allpython":
+#    	requirements => $requirements,
+#    	require => [Package["distribute"],Package["python-pip"],File[$requirements],Package["python-devel"],Package['setuptools']],
+#	}
+#
+# package needed from the distro:
+package {
 	'gcc':
 		ensure => present;
 	'nmap':
@@ -71,17 +78,7 @@ class base(
 		ensure => present;
 	'git':
 		ensure => present;
-	'python-devel':
-		ensure => present;
-	'python-setuptools':
-		ensure => present,
-		require => Yumrepo["epel"];
-	'python-pip':
-		ensure => present,
-		require => [ Yumrepo["epel"],
-			     Package["python-devel"]
-			];
-	}
+}
 
     # Apache
     class { 'apache':

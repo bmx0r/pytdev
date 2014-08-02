@@ -1,12 +1,9 @@
 setuptools
-Fabric
 bpython
-distribute
 importlib
 iniparse
 kombu
 ordereddict
-paramiko
 pycrypto
 pycurl
 pygpgme
@@ -14,7 +11,6 @@ pyparsing
 python-dateutil
 pytz==2012j
 urlgrabber
-virtualenv
 pyflakes
 pep8
 flake8

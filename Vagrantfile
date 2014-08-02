@@ -22,7 +22,7 @@ Vagrant::Config.run do |config|
     puppet.manifest_file = "init.pp"
     puppet.facter = { "fqdn" => "example.com", "hostname" => "my-dev" }
     #puppet.options = ["--fileserverconfig=/vagrant/fileserver.conf", "--verbose", "--debug","--pluginsync" ]
-    puppet.options = ["--fileserverconfig=/vagrant/fileserver.conf", "--verbose", "--pluginsync" ]
+    puppet.options = ["--fileserverconfig=/vagrant/fileserver.conf", "--verbose", "--pluginsync"]
 
     #load sample in ES
     config.vm.provision :shell, :inline => "cd python-libnessus;sudo python setup.py install;cd examples/;python es.py"
