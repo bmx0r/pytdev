@@ -3,6 +3,7 @@ stage { pre: before => Stage[main] }
 node default{
  require  infra::base
  require  infra::database
+ require  infra::web
 
 vcsrepo { '/home/vagrant/python-nmap-lib':
  	ensure   => present,
