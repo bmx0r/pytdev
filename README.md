@@ -3,8 +3,8 @@ POC ES+Kibana+libnessus
 
 Quick setup of a dev env
 tested on : 
-- Vagrant version 1.2.2
-- VirtualBox 4.2.12
+- Vagrant version 1.2.2,1.6.3
+- VirtualBox 4.2.12,4.3.12
 
 git clone https://github.com/bmx0r/pytdev.git
 
