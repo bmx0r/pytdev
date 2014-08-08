@@ -26,5 +26,7 @@ Vagrant::Config.run do |config|
 
     #load sample in ES
     config.vm.provision :shell, :inline => "cd python-libnessus;sudo python setup.py install;cd examples/;python es.py"
+    #add a pre commit hook to libnessus repo, to validate the pep8/pyflake
+    config.vm.provision :shell, :inline => "cd python-libnessus;ln -s pep8-pyflakes-pre-commit.sh .git/hooks/pre-commit"
   end
 end
